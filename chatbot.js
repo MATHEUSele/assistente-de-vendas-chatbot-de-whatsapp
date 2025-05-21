@@ -14,8 +14,14 @@ db.run(`
 `);
 
 const client = new Client({
-  authStrategy: new LocalAuth()
+  authStrategy: new LocalAuth(),
+  puppeteer: {
+    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    headless: false,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  }
 });
+
 
 client.on('qr', qr => {
   qrcode.generate(qr, { small: true });
@@ -75,7 +81,7 @@ client.on('message', async message => {
   // Resposta às opções do menu
   switch (texto) {
     case '1':
-      client.sendMessage(numero, "🕒 Nosso horário de funcionamento:\n\n🟢 Segunda a sábado: 5h30 às 22h\n🟡 Domingo: 6h às 19h");
+      client.sendMessage(numero, "🕒 Nosso horário de funcionamento:\n\n🟢 Funcionamos *todos os dias*, das *6h às 21h*.");
       break;
 
     case '2':
