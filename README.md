@@ -87,4 +87,4 @@ Este bot pode ser útil para:
 
 ---
 
-Este README deve ajudar qualquer pessoa a configurar e entender o seu chatbot!
+
