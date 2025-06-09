@@ -1,90 +1,96 @@
-# Chatbot para WhatsApp - Box das Verduras
 
-## Descrição
+-----
 
-Este é um chatbot simples para WhatsApp desenvolvido em Node.js, projetado para automatizar as interações iniciais com os clientes do "Box das Verduras". Ele ajuda a fornecer respostas imediatas a perguntas comuns, guiar os clientes através de opções de serviço e melhorar o engajamento geral do cliente.
+# Chatbot de Atendimento para APA Barra de Mamanguape (WhatsApp)
 
-Este bot pode ser útil para:
-* Fornecer atendimento ao cliente 24/7 para consultas básicas.
-* Direcionar os clientes para informações importantes como horário de funcionamento e localização.
-* Coletar solicitações iniciais para falar com um atendente humano.
-* Reduzir o tempo de espera do cliente e aumentar a satisfação.
+Este projeto é um chatbot para WhatsApp desenvolvido em Node.js, projetado para automatizar o atendimento inicial e fornecer informações importantes sobre a Área de Proteção Ambiental (APA) Barra de Mamanguape.
 
-## Funcionalidades Principais
+## ✨ Funcionalidades
 
-* **Saudação e Menu Principal:** O bot responde a palavras-chave de saudação (como "olá", "menu", "oi") exibindo um menu interativo.
-* **Opções do Menu:**
-    * **1️⃣ Ver horário de funcionamento:** Informa o horário de funcionamento do estabelecimento.
-        * Resposta: "🕒 Nosso horário de funcionamento:\n\n🟢 Funcionamos *todos os dias*, das *6h às 21h*."
-    * **2️⃣ Falar com um atendente:** Informa ao cliente que um atendente entrará em contato e oferece opções para retornar ao menu ou encerrar.
-        * Resposta: "👨‍💼 Um de nossos atendentes irá falar com você em breve.\nEnquanto isso, digite *menu* para voltar ou *9* para encerrar."
-    * **3️⃣ Ver nossa localização:** Envia um cartão de localização via WhatsApp e uma mensagem de confirmação.
-        * Localização: Latitude -6.812888, Longitude -35.077697 (Nome: 'Box das Verduras').
-        * Resposta: "📍 Essa é a localização do *Box das Verduras*! Estamos esperando por você. 😊\n\nDigite *menu* para voltar ou *9* para encerrar."
-    * **9️⃣ Encerrar atendimento:** Finaliza a conversa com uma mensagem de despedida e remove os dados da conversa do banco de dados.
-        * Resposta: "🛑 Atendimento encerrado. Obrigado por falar com o Box das Verduras!"
-* **Comando de Menu Rápido:** Digitar `#` a qualquer momento (exceto durante um fluxo específico) exibe o menu principal novamente.
-* **Persistência Básica:** Utiliza um banco de dados SQLite (`conversas.db`) para registrar o número do cliente e gerenciar o estado inicial da conversa. Novos usuários são adicionados automaticamente.
-* **Resposta Padrão:** Se o bot não entender a mensagem do cliente, ele envia: "❌ Não entendi sua mensagem. Por favor, digite *menu* para ver as opções ou *9* para sair."
+  - ✅ **Resposta automática** a saudações para iniciar a interação.
+  - ✅ **Menu de opções interativo** para guiar o usuário.
+  - ✅ **Ignora mensagens em grupos**, respondendo apenas em conversas privadas.
+  - ✅ **Fornecimento de informações** como horário, localização, redes sociais e detalhes sobre a APA.
+  - ✅ **Armazenamento de estado** básico da conversa utilizando um banco de dados SQLite.
 
-## Pré-requisitos
+## 🛠️ Tecnologias Utilizadas
 
-* [Node.js](https://nodejs.org/) (versão 16.x ou mais recente recomendada)
-* npm (geralmente instalado com o Node.js)
-* Uma conta WhatsApp ativa para ser usada pelo bot.
-* Google Chrome instalado (o script especifica um caminho para o executável do Chrome no Windows. Se você estiver em outro sistema operacional ou tiver o Chrome em um local diferente/no PATH do sistema, ajuste ou remova a linha `executablePath` no arquivo `chatbot.js`).
+  - **Node.js:** Ambiente de execução do JavaScript no servidor.
+  - **whatsapp-web.js:** Biblioteca para interagir com o WhatsApp Web e automatizar mensagens.
+  - **qrcode-terminal:** Ferramenta para exibir o QR Code de login diretamente no terminal.
+  - **sqlite3:** Driver para o banco de dados SQLite, usado para persistir dados das conversas.
 
-## Instalação
+## ⚙️ Pré-requisitos
 
-1.  **Obtenha o código:**
-    * Faça o download do arquivo `chatbot.js` (e outros arquivos do projeto, se houver) para um diretório em seu computador.
+Antes de começar, você vai precisar ter as seguintes ferramentas instaladas em sua máquina:
 
-2.  **Navegue até o diretório do projeto:**
-    Abra seu terminal ou prompt de comando e use o comando `cd` para navegar até a pasta onde você salvou o arquivo `chatbot.js`.
+  - [Node.js](https://nodejs.org/en/) (versão LTS recomendada)
+  - [NPM](https://www.npmjs.com/) (geralmente instalado junto com o Node.js)
+  - Um número de WhatsApp ativo para conectar o bot.
+
+## 🚀 Instalação e Execução
+
+Siga os passos abaixo para rodar o projeto em sua máquina local.
+
+1.  **Clone o repositório ou baixe os arquivos**
+    Se você estiver usando Git, clone o repositório. Caso contrário, apenas certifique-se de que os arquivos `chatbot.js` e `package.json` estejam na mesma pasta.
+
     ```bash
-    cd caminho/para/seu/projeto
+    git clone https://github.com/seu-usuario/seu-repositorio.git
     ```
 
-3.  **Instale as dependências:**
-    Execute o seguinte comando no terminal para instalar as bibliotecas necessárias:
+2.  **Navegue até o diretório do projeto**
+
     ```bash
-    npm install whatsapp-web.js qrcode-terminal sqlite3
+    cd seu-repositorio
     ```
 
-4.  **Configuração do `executablePath` (se necessário):**
-    No arquivo `chatbot.js`, a linha `executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',` é específica para Windows.
-    * Se você estiver no Windows e o Chrome estiver em outro local, atualize este caminho.
-    * Se você estiver no Linux ou macOS, geralmente você pode remover esta linha ou comentá-la (`// executablePath: ...`), pois o `puppeteer` tentará encontrar o Chrome automaticamente se ele estiver instalado de forma padrão.
-    * Se você optar por rodar em modo `headless: true` (recomendado para servidores), o `executablePath` ainda pode ser relevante dependendo da configuração do seu sistema.
+3.  **Instale as dependências**
+    Execute o comando abaixo para instalar todas as bibliotecas listadas no `package.json`.
 
-## Executando o Bot
+    ```bash
+    npm install
+    ```
 
-1.  **Inicie o bot:**
-    No terminal, dentro do diretório do projeto, execute:
+4.  **Execute o bot**
+    Inicie o bot com o seguinte comando:
+
     ```bash
     node chatbot.js
     ```
 
-2.  **Escaneie o QR Code:**
-    * Na primeira vez que você executar o bot (ou se a sessão de autenticação anterior for perdida), um QR code será exibido diretamente no seu terminal.
-    * Abra o aplicativo WhatsApp no seu celular.
-    * Vá para:
-        * No Android: Toque nos três pontos (⋮) > Aparelhos conectados > Conectar um aparelho.
-        * No iPhone: Vá em Configurações > Aparelhos conectados > Conectar um aparelho.
-    * Escaneie o QR code exibido no seu terminal com a câmera do seu celular.
+5.  **Escaneie o QR Code**
 
-3.  **Bot Pronto:**
-    * Após escanear o QR code com sucesso, você deverá ver a mensagem "Bot do Box das Verduras está pronto!" no terminal.
-    * O bot agora está conectado e pronto para responder às mensagens enviadas para o número do WhatsApp que você usou para escanear.
+      - Ao executar o comando acima, um QR Code aparecerá no seu terminal.
+      - Abra o WhatsApp em seu celular, vá em **Configurações \> Aparelhos conectados \> Conectar um aparelho**.
+      - Escaneie o QR Code exibido no terminal.
+      - Após a autenticação, você verá a mensagem "Bot da APA Barra de Mamanguape está pronto\!" e ele começará a responder às mensagens.
 
-## Visão Geral do Código
+## 🗂️ Estrutura do Projeto
 
-* **`whatsapp-web.js`**: Biblioteca principal para interagir com o WhatsApp Web.
-* **`qrcode-terminal`**: Usada para gerar o QR code de autenticação no terminal.
-* **`sqlite3`**: Usada para o banco de dados SQLite local que armazena informações básicas da conversa.
-* **`new LocalAuth()`**: Estratégia de autenticação que salva os detalhes da sessão localmente, para que você não precise escanear o QR code toda vez que reiniciar o bot (a menos que a sessão expire ou seja invalidada).
-* **`client.on('message', ...)`**: O coração do bot, onde toda a lógica de processamento de mensagens recebidas e envio de respostas acontece.
+```
+/
+├── chatbot.js        # Arquivo principal com toda a lógica do bot
+├── package.json      # Define as dependências e metadados do projeto
+├── package-lock.json # Mantém um registro das versões exatas das dependências
+└── conversas.db      # Banco de dados SQLite gerado automaticamente
+```
 
----
+## 📝 Funcionalidades do Menu
 
+O bot responde aos seguintes comandos numéricos:
 
+  - `1️⃣ Ver horário de funcionamento`: Informa os dias e horários de operação.
+  - `2️⃣ Falar com um atendente`: Envia uma mensagem informando que um atendente humano entrará em contato.
+  - `3️⃣ Ver nossa localização`: Envia um card de localização do Google Maps com o endereço da APA.
+  - `4️⃣ Redes sociais`: Fornece o link para o perfil do Instagram.
+  - `5️⃣ Informações sobre a APA`: Envia um texto descritivo sobre a Área de Proteção Ambiental.
+  - `6️⃣ Próximas ações`: Informa sobre os próximos eventos ou ações (atualmente com uma mensagem padrão).
+  - `9️⃣ Encerrar atendimento`: Finaliza a conversa e remove os dados da sessão do banco de dados.
+  - `menu` ou `#`: Exibe o menu principal a qualquer momento.
+
+## 📄 Licença
+
+Distribuído sob a licença MIT. Veja o arquivo `LICENSE` para mais informações.
+
+-----
